@@ -81,3 +81,15 @@ São pequenos códigos que testam partes específicas do sistema. Se alguém mud
 
 ### Onde está no código?
 No diretório `tests/test_preprocess.py`. Eles verificam se a limpeza de texto remove pontuações, converte para minúsculas e lida com espaços corretamente.
+
+---
+
+## 8. Referências
+
+### Técnicas e Bibliográficas
+*   **Naive Bayes:** Rish, I. (2001). *An empirical study of the naive Bayes classifier*. IJCAI.
+*   **TF-IDF:** Jones, K. S. (1972). *A statistical interpretation of term specificity and its application in retrieval*. Journal of Documentation.
+*   **GitHub Actions:** GitHub Inc. (2018). *GitHub Actions: Automate your workflow from idea to production*. [github.com/features/actions](https://github.com/features/actions).
+
+### Dataset
+*   **SMS Spam Collection:** Almeida, T.A., Hidalgo, J.M.G., & Yamakami, A. (2011). *Contributions to the Study of SMS Spam Filtering: New Collection and Results*. Proceedings of the 2011 ACM Symposium on Document Engineering (DocEng'11). [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/228/sms+spam+collection).

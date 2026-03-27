@@ -38,3 +38,15 @@ Antes de enviar seu código para o GitHub, você deve sempre rodar o linter loca
 flake8 .
 ```
 Se ele não retornar nada, seu código está "bonito" e pronto para o deploy!
+
+---
+
+## 5. Referências
+
+### Técnicas e Bibliográficas
+*   **Flake8:** Cordasco, I. (2010). *Flake8: Your Tool For Style Guide Enforcement*. [flake8.pycqa.org](https://flake8.pycqa.org/)
+*   **PEP 8:** van Rossum, G., Warsaw, B., & Coghlan, N. (2001). *Style Guide for Python Code*. [peps.python.org/pep-0008/](https://peps.python.org/pep-0008/)
+*   **CI/CD for Machine Learning:** Sato, D. et al. (2019). *Continuous Delivery for Machine Learning*. MartinFowler.com. [martinfowler.com/articles/cd4ml.html](https://martinfowler.com/articles/cd4ml.html).
+
+### Dataset
+*   **Car Evaluation:** Bohanec, M., & Rajkovic, V. (1990). *Expert system for decision making*. Sistemica. [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/19/car+evaluation).

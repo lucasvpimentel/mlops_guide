@@ -145,3 +145,16 @@ O endpoint `/info` serve à **observabilidade** — permite auditar qual versão
 | Containerização em produção | Docker + Kubernetes |
 
 Este exercício implementa a base: **contrato de dados + serving + observabilidade básica**. As práticas acima constroem sobre essa fundação.
+
+---
+
+## 6. Referências
+
+### Técnicas e Bibliográficas
+*   **MLOps:** Treveil, M. et al. (2021). *Introducing MLOps: How to Scale Machine Learning in the Enterprise*. O'Reilly Media.
+*   **Scikit-Learn:** Pedregosa, F. et al. (2011). *Scikit-learn: Machine Learning in Python*. Journal of Machine Learning Research.
+*   **FastAPI:** Tiangolo, S. (2018). *FastAPI framework, high performance, easy to learn, fast to code, ready for production*. [fastapi.tiangolo.com](https://fastapi.tiangolo.com/)
+*   **Pydantic:** Colvin, S. (2017). *Pydantic: Data validation and settings management using Python type hinting*. [pydantic.dev](https://pydantic.dev/)
+
+### Dataset
+*   **Palmer Penguins:** Horst, A.M., Hill, A.P., & Gorman, K.B. (2020). *palmerpenguins: Palmer Archipelago (Antarctica) penguin data*. [R package version 0.1.0](https://allisonhorst.github.io/palmerpenguins/).

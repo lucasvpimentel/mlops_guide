@@ -26,3 +26,15 @@ O Docker permite empacotar o código, o modelo treinado (`.joblib`), as bibliote
 ## 3. Por que o Modelo deve estar "Congelado"?
 
 No MLOps, evitamos treinar o modelo dentro do Dockerfile. O ideal é treinar localmente (ou em um servidor de treino), validar o artefato `.joblib` e então copiá-lo para dentro do container. Isso garante que a imagem seja leve e que o modelo seja exatamente aquele que foi testado.
+
+---
+
+## 4. Referências
+
+### Técnicas e Bibliográficas
+*   **Docker:** Docker Inc. (2013). *Docker: Empowering App Development for Developers*. [docker.com](https://www.docker.com/)
+*   **Containerization in ML:** Merkel, D. (2014). *Docker: lightweight linux containers for consistent development and deployment*. Linux Journal.
+*   **12-Factor App:** Wiggins, A. (2011). *The Twelve-Factor App*. [12factor.net](https://12factor.net/) (Princípios de isolamento de dependências).
+
+### Dataset
+*   **Diamonds:** Wickham, H. (2016). *ggplot2: Elegant Graphics for Data Analysis*. Springer-Verlag New York. [Diamonds dataset documentation](https://ggplot2.tidyverse.org/reference/diamonds.html).

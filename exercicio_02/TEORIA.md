@@ -27,3 +27,15 @@ O uso de Pydantic com `ge` (greater or equal) e `le` (less or equal) no `schemas
 - **Singleton Pattern:** O modelo é carregado uma única vez no startup (`lifespan`) e mantido em memória RAM.
 - **Versão no Artefato:** O arquivo `.joblib` carrega sua própria versão, permitindo que a API informe ao usuário qual "cérebro" está gerando aquela resposta.
 - **Saúde com Dependência:** O endpoint `/health` só retorna `model_loaded: true` se o artefato foi carregado com sucesso, permitindo que orquestradores (Kubernetes) saibam se o nó está pronto.
+
+---
+
+## 6. Referências
+
+### Técnicas e Bibliográficas
+*   **Joblib:** *Joblib: running Python functions as pipeline jobs*. [joblib.readthedocs.io](https://joblib.readthedocs.io/)
+*   **Scikit-Learn Pipelines:** Buitinck, L. et al. (2013). *API design for machine learning software: experiences from the scikit-learn project*. arXiv.
+*   **MLOps Level 1:** Google Cloud. *MLOps: Continuous delivery and automation pipelines in machine learning*. [cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning](https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning).
+
+### Dataset
+*   **Energy Efficiency:** Tsanas, A., & Xifara, A. (2012). *Accurate quantitative estimation of the energy performance of residential buildings using multi-output regression*. Energy and Buildings, 49, 560-567. [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/242/energy+efficiency).

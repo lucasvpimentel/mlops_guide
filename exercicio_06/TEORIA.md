@@ -120,3 +120,15 @@ Streamlit (porta 8501)  → Interface do usuário, visualização
 
 Essa separação é uma boa prática de arquitetura: a API pode ser usada por qualquer
 cliente (Streamlit, React, mobile app, outro serviço) sem modificação.
+
+---
+
+## 8. Referências
+
+### Técnicas e Bibliográficas
+*   **Streamlit:** Streamlit Inc. (2019). *Streamlit: The fastest way to build and share data apps*. [streamlit.io](https://streamlit.io/)
+*   **Pillow (PIL):** Clark, A. (2010). *Pillow: The friendly PIL fork*. [python-pillow.org](https://python-pillow.org/)
+*   **Artificial Neural Networks:** Haykin, S. (2009). *Neural Networks and Learning Machines*. Pearson.
+
+### Dataset
+*   **Fashion MNIST:** Xiao, H., Rasul, K., & Vollgraf, R. (2017). *Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms*. arXiv:1708.07747. [github.com/zalandoresearch/fashion-mnist](https://github.com/zalandoresearch/fashion-mnist).
