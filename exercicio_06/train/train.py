@@ -2,15 +2,12 @@
 Script de treinamento do classificador Fashion MNIST.
 
 Fluxo:
-    1. Baixa o dataset Fashion MNIST via tensorflow.keras
-       (60.000 treino / 10.000 teste)
-    2. Normaliza e achata as imagens: (28, 28) → (784,) com valores em [0, 1]
-    3. Treina um MLPClassifier (sklearn) — sem GPU necessária
+    1. Baixa o dataset Fashion MNIST via OpenML (sklearn)
+       (70.000 registros: 60.000 treino / 10.000 teste)
+    2. Normaliza as imagens para o intervalo [0, 1]
+    3. Treina um MLPClassifier (sklearn)
     4. Avalia no conjunto de teste
     5. Salva artefato .joblib com pipeline + metadados
-
-Nota: tensorflow é usado APENAS para baixar os dados.
-      O modelo salvo (joblib) NÃO depende de tensorflow para servir.
 
 Execução:
     cd exercicio_06/
@@ -24,6 +21,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import joblib  # noqa: E402
+import numpy as np  # noqa: E402
+from sklearn.datasets import fetch_openml  # noqa: E402
+from sklearn.model_selection import train_test_split  # noqa: E402
 from sklearn.metrics import accuracy_score, classification_report  # noqa: E402
 from sklearn.neural_network import MLPClassifier  # noqa: E402
 from sklearn.pipeline import Pipeline  # noqa: E402
@@ -33,27 +33,29 @@ from app.config import APP_VERSION, CLASSES, MODEL_PATH  # noqa: E402
 
 def load_fashion_mnist() -> tuple:
     """
-    Baixa o Fashion MNIST via tensorflow.keras e prepara os arrays.
-
-    Pré-processamento (deve ser idêntico ao preprocess_image_bytes em model.py):
-        - Reshape: (N, 28, 28) → (N, 784)
-        - Normalização: uint8 [0, 255] → float32 [0.0, 1.0]
+    Baixa o Fashion MNIST via sklearn.datasets.fetch_openml.
+    
+    O dataset é baixado uma vez e fica em cache local.
+    Retorna (X_train, y_train), (X_test, y_test) normalizados.
     """
-    print("Baixando dataset Fashion MNIST via tensorflow.keras...")
-    # Importação tardia para evitar carregar tensorflow na API
-    from tensorflow.keras.datasets import fashion_mnist
-    (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
+    print("Baixando dataset Fashion MNIST via OpenML (pode demorar)...")
+    # as_frame=False garante que retorne arrays numpy em vez de DataFrames
+    mnist = fetch_openml("Fashion-MNIST", version=1, as_frame=False, parser="auto")
+    X, y = mnist.data, mnist.target.astype(int)
 
-    # Normalização e Reshape
-    X_train = X_train.reshape(-1, 28 * 28).astype("float32") / 255.0
-    X_test = X_test.reshape(-1, 28 * 28).astype("float32") / 255.0
+    # Normalização: [0, 255] -> [0.0, 1.0]
+    X = X.astype("float32") / 255.0
+
+    # Split manual (o OpenML traz os 70k juntos)
+    # Usamos os primeiros 60k para treino e os últimos 10k para teste como no Keras
+    X_train, X_test = X[:60000], X[60000:]
+    y_train, y_test = y[:60000], y[60000:]
 
     return (X_train, y_train), (X_test, y_test)
 
 
 def build_pipeline() -> Pipeline:
     """Cria o pipeline sklearn com MLPClassifier."""
-    # Hiperparâmetros balanceados para convergência rápida em CPU
     model = MLPClassifier(
         hidden_layer_sizes=(128, 64),
         activation="relu",
@@ -102,7 +104,7 @@ def save_artifact(pipeline: Pipeline, metrics: dict) -> None:
 
 def main() -> None:
     print("=" * 60)
-    print("  Fashion MNIST — Treinamento (MLPClassifier)")
+    print("  Fashion MNIST — Treinamento (MLPClassifier + OpenML)")
     print("=" * 60)
 
     (X_train, y_train), (X_test, y_test) = load_fashion_mnist()

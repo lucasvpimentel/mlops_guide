@@ -36,3 +36,6 @@ Thumbs.db
 # Variáveis de ambiente
 .env
 .env.local
+
+.gemini/
+gha-creds-*.json
