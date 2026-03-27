@@ -2,7 +2,8 @@
 Script de treinamento do classificador Fashion MNIST.
 
 Fluxo:
-    1. Baixa o dataset Fashion MNIST via tensorflow.keras (60.000 treino / 10.000 teste)
+    1. Baixa o dataset Fashion MNIST via tensorflow.keras
+       (60.000 treino / 10.000 teste)
     2. Normaliza e achata as imagens: (28, 28) → (784,) com valores em [0, 1]
     3. Treina um MLPClassifier (sklearn) — sem GPU necessária
     4. Avalia no conjunto de teste
@@ -22,13 +23,12 @@ from pathlib import Path
 # Permite importar app.config quando executado a partir da raiz do projeto
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import joblib
-import numpy as np
-from sklearn.metrics import accuracy_score, classification_report
-from sklearn.neural_network import MLPClassifier
-from sklearn.pipeline import Pipeline
+import joblib  # noqa: E402
+from sklearn.metrics import accuracy_score, classification_report  # noqa: E402
+from sklearn.neural_network import MLPClassifier  # noqa: E402
+from sklearn.pipeline import Pipeline  # noqa: E402
 
-from app.config import APP_VERSION, CLASSES, MODEL_PATH
+from app.config import APP_VERSION, CLASSES, MODEL_PATH  # noqa: E402
 
 
 def load_fashion_mnist() -> tuple:
@@ -38,69 +38,62 @@ def load_fashion_mnist() -> tuple:
     Pré-processamento (deve ser idêntico ao preprocess_image_bytes em model.py):
         - Reshape: (N, 28, 28) → (N, 784)
         - Normalização: uint8 [0, 255] → float32 [0.0, 1.0]
-
-    Returns:
-        (X_train, y_train, X_test, y_test) como arrays numpy
     """
-    print("Baixando Fashion MNIST via tensorflow.keras...")
-    from tensorflow.keras.datasets import fashion_mnist  # type: ignore
+    print("Baixando dataset Fashion MNIST via tensorflow.keras...")
+    # Importação tardia para evitar carregar tensorflow na API
+    from tensorflow.keras.datasets import fashion_mnist
+    (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
 
-    (X_train_raw, y_train), (X_test_raw, y_test) = fashion_mnist.load_data()
+    # Normalização e Reshape
+    X_train = X_train.reshape(-1, 28 * 28).astype("float32") / 255.0
+    X_test = X_test.reshape(-1, 28 * 28).astype("float32") / 255.0
 
-    print(f"  Imagens de treino: {X_train_raw.shape}  |  Teste: {X_test_raw.shape}")
-
-    # Achatar e normalizar — MESMA lógica de preprocess_image_bytes() em model.py
-    X_train = X_train_raw.reshape(-1, 784).astype(np.float32) / 255.0
-    X_test = X_test_raw.reshape(-1, 784).astype(np.float32) / 255.0
-
-    return X_train, y_train, X_test, y_test
+    return (X_train, y_train), (X_test, y_test)
 
 
 def build_pipeline() -> Pipeline:
-    """
-    Cria o pipeline sklearn: MLPClassifier.
+    """Cria o pipeline sklearn com MLPClassifier."""
+    # Hiperparâmetros balanceados para convergência rápida em CPU
+    model = MLPClassifier(
+        hidden_layer_sizes=(128, 64),
+        activation="relu",
+        solver="adam",
+        max_iter=30,
+        random_state=42,
+        verbose=True,
+    )
 
-    MLPClassifier com 2 camadas ocultas (256 → 128 neurônios).
-    Acurácia esperada no Fashion MNIST: ~87-88%.
-    """
     return Pipeline([
-        (
-            "clf",
-            MLPClassifier(
-                hidden_layer_sizes=(256, 128),
-                max_iter=30,
-                random_state=42,
-                verbose=True,
-                early_stopping=True,   # Para se não melhorar por 10 épocas
-                validation_fraction=0.1,
-            ),
-        )
+        ("model", model),
     ])
 
 
-def evaluate(pipeline: Pipeline, X_test: np.ndarray, y_test: np.ndarray) -> dict:
-    """Avalia o modelo e retorna métricas."""
+def evaluate(pipeline: Pipeline, X_test, y_test) -> dict:
+    """Avalia e imprime o relatório de classificação."""
     y_pred = pipeline.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
 
-    print(f"\nAcurácia no conjunto de teste: {accuracy:.4f} ({accuracy * 100:.1f}%)")
-    print("\nRelatório por classe:")
-    print(classification_report(y_test, y_pred, target_names=CLASSES))
+    acc = accuracy_score(y_test, y_pred)
+    report = classification_report(
+        y_test,
+        y_pred,
+        target_names=CLASSES,
+        output_dict=True,
+    )
 
-    return {"accuracy": round(float(accuracy), 4)}
+    print(f"\nAcurácia no teste: {acc:.4f}")
+    return {"accuracy": round(float(acc), 4), "report": report}
 
 
 def save_artifact(pipeline: Pipeline, metrics: dict) -> None:
-    """Serializa o pipeline e metadados como artefato .joblib."""
+    """Serializa o modelo e metadados."""
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     artifact = {
         "pipeline": pipeline,
-        "classes": CLASSES,
         "algorithm": "MLPClassifier",
         "metrics": metrics,
         "version": APP_VERSION,
-        "input_shape": "784 (28x28 grayscale, normalizado [0,1])",
+        "classes": CLASSES,
     }
 
     joblib.dump(artifact, MODEL_PATH)
@@ -109,19 +102,20 @@ def save_artifact(pipeline: Pipeline, metrics: dict) -> None:
 
 def main() -> None:
     print("=" * 60)
-    print("  Fashion MNIST Classifier — Treinamento")
+    print("  Fashion MNIST — Treinamento (MLPClassifier)")
     print("=" * 60)
 
-    X_train, y_train, X_test, y_test = load_fashion_mnist()
+    (X_train, y_train), (X_test, y_test) = load_fashion_mnist()
+    print(f"Treino: {len(X_train)} | Teste: {len(X_test)}")
 
-    print("\nTreinando MLPClassifier (hidden_layers=[256, 128], max_iter=30)...")
+    print("\nIniciando treinamento...")
     pipeline = build_pipeline()
     pipeline.fit(X_train, y_train)
 
     metrics = evaluate(pipeline, X_test, y_test)
     save_artifact(pipeline, metrics)
 
-    print("\nTreinamento concluído com sucesso.")
+    print("\nProcesso concluído.")
 
 
 if __name__ == "__main__":

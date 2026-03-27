@@ -5,11 +5,21 @@ Requerem o modelo treinado em model/penguin_classifier.joblib.
 Execute 'python train/train_model.py' antes de rodar estes testes.
 """
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
 
-client = TestClient(app)
+
+@pytest.fixture
+def client():
+    """
+    Retorna um TestClient que respeita o ciclo de vida (lifespan) da app.
+    Isso garante que o modelo de ML seja carregado antes dos testes.
+    """
+    with TestClient(app) as c:
+        yield c
+
 
 VALID_ADELIE = {
     "bill_length_mm": 39.1,
@@ -32,12 +42,12 @@ VALID_GENTOO = {
 
 # --- /health ---
 
-def test_health_returns_200():
+def test_health_returns_200(client):
     response = client.get("/health")
     assert response.status_code == 200
 
 
-def test_health_model_loaded():
+def test_health_model_loaded(client):
     response = client.get("/health")
     data = response.json()
     assert data["status"] == "ok"
@@ -46,12 +56,12 @@ def test_health_model_loaded():
 
 # --- /info ---
 
-def test_info_returns_200():
+def test_info_returns_200(client):
     response = client.get("/info")
     assert response.status_code == 200
 
 
-def test_info_contains_expected_fields():
+def test_info_contains_expected_fields(client):
     response = client.get("/info")
     data = response.json()
     assert "species_classes" in data
@@ -63,12 +73,12 @@ def test_info_contains_expected_fields():
 
 # --- /predict happy path ---
 
-def test_predict_returns_200_with_valid_input():
+def test_predict_returns_200_with_valid_input(client):
     response = client.post("/predict", json=VALID_ADELIE)
     assert response.status_code == 200
 
 
-def test_predict_response_has_required_fields():
+def test_predict_response_has_required_fields(client):
     response = client.post("/predict", json=VALID_ADELIE)
     data = response.json()
     assert "species" in data
@@ -76,26 +86,26 @@ def test_predict_response_has_required_fields():
     assert "probabilities" in data
 
 
-def test_predict_species_is_valid():
+def test_predict_species_is_valid(client):
     response = client.post("/predict", json=VALID_ADELIE)
     data = response.json()
     assert data["species"] in ["Adelie", "Chinstrap", "Gentoo"]
 
 
-def test_predict_confidence_between_0_and_1():
+def test_predict_confidence_between_0_and_1(client):
     response = client.post("/predict", json=VALID_ADELIE)
     data = response.json()
     assert 0.0 <= data["confidence"] <= 1.0
 
 
-def test_predict_probabilities_sum_to_one():
+def test_predict_probabilities_sum_to_one(client):
     response = client.post("/predict", json=VALID_ADELIE)
     data = response.json()
     total = sum(data["probabilities"].values())
     assert abs(total - 1.0) < 1e-4
 
 
-def test_predict_gentoo_features():
+def test_predict_gentoo_features(client):
     response = client.post("/predict", json=VALID_GENTOO)
     assert response.status_code == 200
     data = response.json()
@@ -104,36 +114,36 @@ def test_predict_gentoo_features():
 
 # --- /predict — validação Pydantic (422) ---
 
-def test_predict_negative_body_mass_returns_422():
+def test_predict_negative_body_mass_returns_422(client):
     payload = {**VALID_ADELIE, "body_mass_g": -100.0}
     response = client.post("/predict", json=payload)
     assert response.status_code == 422
 
 
-def test_predict_invalid_island_returns_422():
+def test_predict_invalid_island_returns_422(client):
     payload = {**VALID_ADELIE, "island": "Antarctica"}
     response = client.post("/predict", json=payload)
     assert response.status_code == 422
 
 
-def test_predict_invalid_sex_returns_422():
+def test_predict_invalid_sex_returns_422(client):
     payload = {**VALID_ADELIE, "sex": "unknown"}
     response = client.post("/predict", json=payload)
     assert response.status_code == 422
 
 
-def test_predict_empty_body_returns_422():
+def test_predict_empty_body_returns_422(client):
     response = client.post("/predict", json={})
     assert response.status_code == 422
 
 
-def test_predict_bill_length_out_of_range_returns_422():
+def test_predict_bill_length_out_of_range_returns_422(client):
     payload = {**VALID_ADELIE, "bill_length_mm": 999.0}
     response = client.post("/predict", json=payload)
     assert response.status_code == 422
 
 
-def test_predict_extra_field_returns_422():
+def test_predict_extra_field_returns_422(client):
     payload = {**VALID_ADELIE, "extra_field": "not_allowed"}
     response = client.post("/predict", json=payload)
     assert response.status_code == 422

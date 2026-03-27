@@ -21,7 +21,8 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """
     Gerencia o ciclo de vida da aplicação FastAPI.
-    Realiza o carregamento do modelo de ML antes da API começar a aceitar requisições.
+    Realiza o carregamento do modelo de ML antes da API começar
+    a aceitar requisições.
     """
     # Startup: carrega o modelo antes de aceitar requisições
     logger.info("Iniciando API — carregando modelo...")
@@ -44,7 +45,8 @@ app = FastAPI(
 def health_check():
     """
     Endpoint de verificação de saúde (Health Check).
-    Verifica se a API está operacional e se o modelo de machine learning foi carregado corretamente.
+    Verifica se a API está operacional e se o modelo de machine learning
+    foi carregado corretamente.
     """
     return HealthResponse(
         status="ok",
@@ -57,7 +59,8 @@ def health_check():
 def model_info():
     """
     Retorna informações detalhadas e metadados sobre o modelo.
-    Inclui features de entrada, classes de espécies e valores válidos para campos categóricos.
+    Inclui features de entrada, classes de espécies e valores válidos
+    para campos categóricos.
     """
     return ModelInfoResponse(
         version=APP_VERSION,
@@ -80,6 +83,7 @@ def predict(features: PenguinFeatures):
         # Chama a lógica de predição encapsulada no módulo do modelo
         result = model_module.predict(features)
     except RuntimeError as exc:
-        # Retorna erro 503 se o modelo não estiver disponível ou ocorrer falha na inferência
+        # Retorna erro 503 se o modelo não estiver disponível ou ocorrer
+        # falha na inferência
         raise HTTPException(status_code=503, detail=str(exc))
     return result

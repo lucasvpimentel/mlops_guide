@@ -84,6 +84,10 @@ class TestPredictEndpoint:
 
     def test_fair_cut_returns_lower_price_than_ideal(self, client):
         """Diamante com corte Fair deve custar menos que corte Ideal."""
-        ideal = client.post("/predict", json={**VALID_PAYLOAD, "cut": "Ideal"}).json()
-        fair = client.post("/predict", json={**VALID_PAYLOAD, "cut": "Fair"}).json()
+        ideal = client.post(
+            "/predict", json={**VALID_PAYLOAD, "cut": "Ideal"}
+        ).json()
+        fair = client.post(
+            "/predict", json={**VALID_PAYLOAD, "cut": "Fair"}
+        ).json()
         assert ideal["price_usd"] >= fair["price_usd"]

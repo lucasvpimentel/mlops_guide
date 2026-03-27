@@ -18,8 +18,10 @@ from app.schemas import PenguinFeatures, PredictionResponse
 
 logger = logging.getLogger(__name__)
 
-# Encoders para variáveis categóricas — essenciais para converter texto em números
-# Devem seguir rigorosamente a mesma lógica e valores usados durante o treinamento.
+# Encoders para variáveis categóricas — essenciais para converter
+# texto em números
+# Devem seguir rigorosamente a mesma lógica e valores usados durante
+# o treinamento.
 _ISLAND_ENCODER = LabelEncoder().fit(["Biscoe", "Dream", "Torgersen"])
 _SEX_ENCODER = LabelEncoder().fit(["female", "male"])
 
@@ -44,19 +46,26 @@ def load_model() -> None:
 
 
 def is_model_loaded() -> bool:
-    """Informa se o modelo já está disponível na memória para predição."""
+    """
+    Informa se o modelo já está disponível na memória para predição.
+    """
     return _artifact is not None
 
 
 def get_feature_names() -> list[str]:
-    """Retorna os nomes das features de entrada registradas no artefato do modelo."""
+    """
+    Retorna os nomes das features de entrada registradas no artefato
+    do modelo.
+    """
     if _artifact is None:
         return []
     return _artifact["feature_names"]
 
 
 def get_class_names() -> list[str]:
-    """Retorna a lista de nomes das espécies (classes) que o modelo conhece."""
+    """
+    Retorna a lista de nomes das espécies (classes) que o modelo conhece.
+    """
     if _artifact is None:
         return []
     return _artifact["class_names"]
@@ -65,7 +74,8 @@ def get_class_names() -> list[str]:
 def predict(features: PenguinFeatures) -> PredictionResponse:
     """
     Executa o fluxo completo de inferência:
-    1. Transforma o objeto de entrada (Pydantic) em um array numérico legível pelo modelo.
+    1. Transforma o objeto de entrada (Pydantic) em um array numérico
+       legível pelo modelo.
     2. Aplica as transformações de encoding para campos categóricos.
     3. Chama o Pipeline do Scikit-Learn para calcular as probabilidades.
     4. Formata e retorna o resultado.
@@ -77,8 +87,11 @@ def predict(features: PenguinFeatures) -> PredictionResponse:
     pipeline: Pipeline = _artifact["pipeline"]
     class_names: list[str] = _artifact["class_names"]
 
-    # Codifica as variáveis categóricas do request em números usando os encoders carregados
-    island_encoded = int(_ISLAND_ENCODER.transform([features.island.value])[0])
+    # Codifica as variáveis categóricas do request em números usando os
+    # encoders carregados
+    island_encoded = int(
+        _ISLAND_ENCODER.transform([features.island.value])[0]
+    )
     sex_encoded = int(_SEX_ENCODER.transform([features.sex.value])[0])
 
     # Monta o array bidimensional de entrada para o Scikit-Learn

@@ -19,12 +19,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_PATH = BASE_DIR / "model" / "heart_model.joblib"
 
+
 def train():
     print("Buscando dataset Heart Disease da UCI (ID: 45)...")
     heart_disease = fetch_ucirepo(id=45)
-    
+
     X = heart_disease.data.features
-    # O target 'num' varia de 0 (saudável) a 4 (doente). 
+    # O target 'num' varia de 0 (saudável) a 4 (doente).
     # Vamos binarizar: 0 vs (1,2,3,4)
     y = (heart_disease.data.targets['num'] > 0).astype(int)
 
@@ -66,6 +67,7 @@ def train():
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(artifact, MODEL_PATH)
     print(f"Modelo serializado com sucesso em: {MODEL_PATH}")
+
 
 if __name__ == "__main__":
     train()

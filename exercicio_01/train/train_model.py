@@ -1,8 +1,9 @@
 """
 Script de treinamento do classificador de espécies de pinguins.
 
-O script carrega os dados brutos, realiza o pré-processamento das variáveis, treina um classificador
-RandomForest, avalia o desempenho e salva o artefato do modelo final.
+O script carrega os dados brutos, realiza o pré-processamento das
+variáveis, treina um classificador RandomForest, avalia o desempenho
+e salva o artefato do modelo final.
 
 Execução:
     python train/train_model.py
@@ -21,14 +22,18 @@ import joblib  # noqa: E402
 import pandas as pd  # noqa: E402
 import seaborn as sns  # noqa: E402
 from sklearn.ensemble import RandomForestClassifier  # noqa: E402
-from sklearn.metrics import classification_report, accuracy_score  # noqa: E402
+from sklearn.metrics import (  # noqa: E402
+    classification_report,
+    accuracy_score,
+)
 from sklearn.model_selection import train_test_split  # noqa: E402
 from sklearn.pipeline import Pipeline  # noqa: E402
 from sklearn.preprocessing import LabelEncoder, StandardScaler  # noqa: E402
 
 from app.config import MODEL_PATH, SPECIES  # noqa: E402
 
-# Definição das colunas usadas para entrada (features) e do alvo da predição (target)
+# Definição das colunas usadas para entrada (features) e do alvo da
+# predição (target)
 FEATURE_COLUMNS = [
     "bill_length_mm",
     "bill_depth_mm",
@@ -50,12 +55,15 @@ def load_and_prepare_data() -> tuple[pd.DataFrame, pd.Series]:
     df = sns.load_dataset("penguins")
 
     print(f"  Registros brutos: {len(df)}")
-    # Remove linhas que possuem valores nulos nas colunas de interesse (limpeza de dados)
+    # Remove linhas que possuem valores nulos nas colunas de interesse
+    # (limpeza de dados)
     df = df.dropna(subset=FEATURE_COLUMNS + [TARGET_COLUMN])
     print(f"  Registros após remover nulos: {len(df)}")
 
-    # Codificação de variáveis categóricas para formato numérico legível pelo scikit-learn
-    # LabelEncoder transforma classes textuais em números inteiros (ex: male -> 0, female -> 1)
+    # Codificação de variáveis categóricas para formato numérico legível
+    # pelo scikit-learn
+    # LabelEncoder transforma classes textuais em números inteiros
+    # (ex: male -> 0, female -> 1)
     df["island"] = LabelEncoder().fit_transform(df["island"])
     df["sex"] = LabelEncoder().fit_transform(df["sex"])
 
@@ -70,20 +78,25 @@ def train(X_train: pd.DataFrame, y_train: pd.Series) -> Pipeline:
     O pipeline inclui a normalização das features e o classificador final.
     """
     print("Treinando RandomForestClassifier...")
-    # Usamos um Pipeline para encapsular o escalonamento e o modelo em um único objeto
+    # Usamos um Pipeline para encapsular o escalonamento e o modelo em um
+    # único objeto
     pipeline = Pipeline([
-        ("scaler", StandardScaler()),  # Normaliza os dados (média 0 e variância 1)
+        ("scaler", StandardScaler()),  # Normaliza os dados
         ("clf", RandomForestClassifier(
             n_estimators=100,           # Quantidade de árvores na floresta
             random_state=RANDOM_STATE,  # Fixa a aleatoriedade
-            class_weight="balanced",    # Trata classes desbalanceadas automaticamente
+            class_weight="balanced",    # Trata classes desbalanceadas
         )),
     ])
     pipeline.fit(X_train, y_train)
     return pipeline
 
 
-def evaluate(pipeline: Pipeline, X_test: pd.DataFrame, y_test: pd.Series) -> None:
+def evaluate(
+    pipeline: Pipeline,
+    X_test: pd.DataFrame,
+    y_test: pd.Series,
+) -> None:
     """
     Avalia a performance do modelo no conjunto de dados de teste.
     """
@@ -92,7 +105,9 @@ def evaluate(pipeline: Pipeline, X_test: pd.DataFrame, y_test: pd.Series) -> Non
     print(f"\nAcurácia no conjunto de teste: {acc:.4f} ({acc*100:.1f}%)")
     print("\nRelatório de classificação:")
     # Exibe métricas detalhadas (precision, recall, f1-score) para cada classe
-    print(classification_report(y_test, y_pred, target_names=sorted(SPECIES)))
+    print(
+        classification_report(y_test, y_pred, target_names=sorted(SPECIES))
+    )
 
 
 def save_model(pipeline: Pipeline) -> None:
@@ -102,7 +117,8 @@ def save_model(pipeline: Pipeline) -> None:
     # Cria o diretório de destino caso ele não exista
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    # Salva o pipeline junto com metadados para que a API use as features corretas
+    # Salva o pipeline junto com metadados para que a API use as features
+    # corretas
     artifact = {
         "pipeline": pipeline,
         "feature_names": FEATURE_COLUMNS,

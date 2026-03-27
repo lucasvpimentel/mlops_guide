@@ -185,16 +185,8 @@ def main():
             st.markdown("---")
             st.markdown("**Distribuição de probabilidades:**")
 
-            # Tabela de probabilidades
-            probs = result["probabilities"]
-            prob_data = {
-                "Categoria": list(probs.keys()),
-                "Probabilidade": [f"{v * 100:.1f}%" for v in probs.values()],
-                "Barra": list(probs.values()),
-            }
-
             # Gráfico de barras
-            chart_data = {k: v for k, v in probs.items()}
+            chart_data = {k: v for k, v in result["probabilities"].items()}
             st.bar_chart(chart_data, height=300)
 
     # ---------------------------------------------------------------------------
@@ -204,16 +196,21 @@ def main():
     with st.expander("Como funciona internamente?"):
         st.markdown("""
         1. **Você envia** uma imagem JPEG/PNG pelo navegador.
-        2. **O Streamlit** lê os bytes e faz um `POST /predict/upload` para a API FastAPI.
-        3. **A API** recebe os bytes, converte para grayscale 28×28, normaliza para [0,1] e passa ao modelo.
-        4. **O modelo** (MLPClassifier) retorna probabilidades para as 10 classes.
+        2. **O Streamlit** lê os bytes e faz um `POST /predict/upload`
+           para a API FastAPI.
+        3. **A API** recebe os bytes, converte para grayscale 28×28,
+           normaliza para [0,1] e passa ao modelo.
+        4. **O modelo** (MLPClassifier) retorna probabilidades para as
+           10 classes.
         5. **A API** retorna o JSON com categoria, confiança e distribuição.
         6. **O Streamlit** exibe o resultado visualmente.
 
         ```
-        Você → [Streamlit :8501] → POST /predict/upload → [FastAPI :8000] → MLPClassifier
-                                                                                    ↓
-        Você ← [Streamlit :8501] ← JSON {category, confidence} ← [FastAPI :8000] ←─┘
+        Você → [Streamlit :8501] → POST /predict/upload → [FastAPI :8000]
+                                                                  ↓
+                                                             MLPClassifier
+                                                                  ↓
+        Você ← [Streamlit :8501] ← JSON {category, confidence} ←─┘
         ```
         """)
 

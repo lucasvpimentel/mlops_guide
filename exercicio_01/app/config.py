@@ -6,11 +6,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Caminho completo para o arquivo do modelo treinado (.joblib)
 MODEL_PATH = BASE_DIR / "model" / "penguin_classifier.joblib"
 
-# Metadados básicos da API para exibição na documentação automática (Swagger/Redoc)
+# Metadados básicos da API para exibição na documentação
+# automática (Swagger/Redoc)
 APP_VERSION = "1.0.0"
 APP_TITLE = "Penguin Species Classifier"
 APP_DESCRIPTION = (
-    "API para classificação de espécies de pinguins do dataset Palmer Penguins. "
+    "API para classificação de espécies de pinguins do dataset "
+    "Palmer Penguins. "
     "Prediz Adelie, Chinstrap ou Gentoo com base em medidas físicas."
 )
 

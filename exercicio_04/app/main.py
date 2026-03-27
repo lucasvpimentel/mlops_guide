@@ -10,6 +10,7 @@ from app.schemas import (
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
@@ -28,6 +29,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+
 @app.get("/health", response_model=HealthResponse, tags=["Monitoramento"])
 def health():
     return HealthResponse(
@@ -35,12 +37,14 @@ def health():
         model_loaded=model_module.is_model_loaded()
     )
 
+
 @app.get("/info", response_model=ModelInfoResponse, tags=["Monitoramento"])
 def info():
     data = model_module.get_info()
     if not data:
         raise HTTPException(status_code=503, detail="Modelo não carregado.")
     return ModelInfoResponse(**data)
+
 
 @app.post("/predict", response_model=HeartRiskResponse, tags=["Predição"])
 def predict(features: HeartPatientFeatures):

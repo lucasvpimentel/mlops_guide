@@ -40,7 +40,7 @@ class TestHealthEndpoint:
         assert response.status_code == 200
 
     def test_health_model_loaded(self):
-        data = response = client.get("/health").json()
+        data = client.get("/health").json()
         assert data["model_loaded"] is True
 
     def test_health_has_version(self):

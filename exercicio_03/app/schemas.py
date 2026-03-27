@@ -42,7 +42,9 @@ class DiamondFeatures(BaseModel):
         ...,
         ge=CARAT_MIN,
         le=CARAT_MAX,
-        description=f"Peso do diamante em quilates [{CARAT_MIN}, {CARAT_MAX}]",
+        description=(
+            f"Peso do diamante em quilates [{CARAT_MIN}, {CARAT_MAX}]"
+        ),
         examples=[0.89],
     )
     cut: Literal["Fair", "Good", "Very Good", "Premium", "Ideal"] = Field(
@@ -52,12 +54,20 @@ class DiamondFeatures(BaseModel):
     )
     color: Literal["D", "E", "F", "G", "H", "I", "J"] = Field(
         ...,
-        description=f"Cor do diamante. Uma de: {VALID_COLORS} (D = melhor, J = pior)",
+        description=(
+            f"Cor do diamante. Uma de: {VALID_COLORS} "
+            "(D = melhor, J = pior)"
+        ),
         examples=["E"],
     )
-    clarity: Literal["IF", "VVS1", "VVS2", "VS1", "VS2", "SI1", "SI2", "I1"] = Field(
+    clarity: Literal[
+        "IF", "VVS1", "VVS2", "VS1", "VS2", "SI1", "SI2", "I1"
+    ] = Field(
         ...,
-        description=f"Clareza do diamante. Uma de: {VALID_CLARITIES} (IF = melhor, I1 = pior)",
+        description=(
+            f"Clareza do diamante. Uma de: {VALID_CLARITIES} "
+            "(IF = melhor, I1 = pior)"
+        ),
         examples=["VS1"],
     )
     depth: float = Field(
@@ -71,7 +81,8 @@ class DiamondFeatures(BaseModel):
         ...,
         ge=TABLE_MIN,
         le=TABLE_MAX,
-        description=f"Largura do topo em relação ao ponto mais largo (%) [{TABLE_MIN}, {TABLE_MAX}]",
+        description=f"Largura do topo em relação ao ponto mais largo (%) "
+                    f"[{TABLE_MIN}, {TABLE_MAX}]",
         examples=[57.0],
     )
     x: float = Field(
@@ -121,7 +132,9 @@ class HealthResponse(BaseModel):
     """Resposta do endpoint de verificação de saúde da API."""
 
     status: str = Field(..., examples=["ok"])
-    model_loaded: bool = Field(..., description="True se o modelo está carregado na memória")
+    model_loaded: bool = Field(
+        ..., description="True se o modelo está carregado na memória"
+    )
     version: str = Field(..., examples=[APP_VERSION])
 
 

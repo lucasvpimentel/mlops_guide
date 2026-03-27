@@ -14,7 +14,12 @@ from fastapi import FastAPI, HTTPException
 
 from app import model as model_module
 from app.config import APP_DESCRIPTION, APP_TITLE, APP_VERSION
-from app.schemas import HealthResponse, ModelInfoResponse, DiamondFeatures, PriceResponse
+from app.schemas import (
+    HealthResponse,
+    ModelInfoResponse,
+    DiamondFeatures,
+    PriceResponse,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -47,7 +52,11 @@ def health_check():
     )
 
 
-@app.get("/info", response_model=ModelInfoResponse, tags=["Monitoramento"])
+@app.get(
+    "/info",
+    response_model=ModelInfoResponse,
+    tags=["Monitoramento"],
+)
 def model_info():
     """Retorna metadados do modelo carregado (algoritmo, features, métricas)."""
     if not model_module.is_model_loaded():

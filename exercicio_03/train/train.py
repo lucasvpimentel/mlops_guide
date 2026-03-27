@@ -3,8 +3,10 @@ Script de treinamento do modelo Diamond Price Predictor.
 
 Fluxo:
     1. Carrega o dataset 'diamonds' via seaborn (53.940 registros)
-    2. Usa todas as 9 features (carat, cut, color, clarity, depth, table, x, y, z)
-    3. Aplica ColumnTransformer: OneHotEncoder nas categóricas, passthrough nas numéricas
+    2. Usa todas as 9 features (carat, cut, color, clarity, depth, table,
+       x, y, z)
+    3. Aplica ColumnTransformer: OrdinalEncoder nas categóricas,
+       passthrough nas numéricas
     4. Treina um RandomForestRegressor
     5. Avalia com RMSE e R² no conjunto de teste (20%)
     6. Salva artefato .joblib com pipeline + metadados
@@ -20,16 +22,16 @@ from pathlib import Path
 # Permite importar app.config quando executado a partir da raiz do projeto
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import joblib
-import seaborn as sns
-from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OrdinalEncoder
+import joblib  # noqa: E402
+import seaborn as sns  # noqa: E402
+from sklearn.compose import ColumnTransformer  # noqa: E402
+from sklearn.ensemble import RandomForestRegressor  # noqa: E402
+from sklearn.metrics import mean_squared_error, r2_score  # noqa: E402
+from sklearn.model_selection import train_test_split  # noqa: E402
+from sklearn.pipeline import Pipeline  # noqa: E402
+from sklearn.preprocessing import OrdinalEncoder  # noqa: E402
 
-from app.config import (
+from app.config import (  # noqa: E402
     APP_VERSION,
     MODEL_PATH,
 )
@@ -37,7 +39,9 @@ from app.config import (
 # Colunas do dataset
 CATEGORICAL_FEATURES = ["cut", "color", "clarity"]
 NUMERICAL_FEATURES = ["carat", "depth", "table", "x", "y", "z"]
-ALL_FEATURES = ["carat", "cut", "color", "clarity", "depth", "table", "x", "y", "z"]
+ALL_FEATURES = [
+    "carat", "cut", "color", "clarity", "depth", "table", "x", "y", "z"
+]
 TARGET = "price"
 
 
@@ -72,7 +76,9 @@ def build_pipeline() -> Pipeline:
         transformers=[
             (
                 "cat",
-                OrdinalEncoder(categories=[cut_order, color_order, clarity_order]),
+                OrdinalEncoder(
+                    categories=[cut_order, color_order, clarity_order]
+                ),
                 CATEGORICAL_FEATURES,
             )
         ],

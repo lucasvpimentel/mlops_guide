@@ -39,28 +39,40 @@ class PenguinFeatures(BaseModel):
         ...,
         ge=BILL_LENGTH_MIN,
         le=BILL_LENGTH_MAX,
-        description=f"Comprimento do bico em mm [{BILL_LENGTH_MIN}, {BILL_LENGTH_MAX}]",
+        description=(
+            f"Comprimento do bico em mm "
+            f"[{BILL_LENGTH_MIN}, {BILL_LENGTH_MAX}]"
+        ),
         examples=[39.1],
     )
     bill_depth_mm: float = Field(
         ...,
         ge=BILL_DEPTH_MIN,
         le=BILL_DEPTH_MAX,
-        description=f"Profundidade do bico em mm [{BILL_DEPTH_MIN}, {BILL_DEPTH_MAX}]",
+        description=(
+            f"Profundidade do bico em mm "
+            f"[{BILL_DEPTH_MIN}, {BILL_DEPTH_MAX}]"
+        ),
         examples=[18.7],
     )
     flipper_length_mm: float = Field(
         ...,
         ge=FLIPPER_LENGTH_MIN,
         le=FLIPPER_LENGTH_MAX,
-        description=f"Comprimento da nadadeira em mm [{FLIPPER_LENGTH_MIN}, {FLIPPER_LENGTH_MAX}]",
+        description=(
+            f"Comprimento da nadadeira em mm "
+            f"[{FLIPPER_LENGTH_MIN}, {FLIPPER_LENGTH_MAX}]"
+        ),
         examples=[181.0],
     )
     body_mass_g: float = Field(
         ...,
         ge=BODY_MASS_MIN,
         le=BODY_MASS_MAX,
-        description=f"Massa corporal em gramas [{BODY_MASS_MIN}, {BODY_MASS_MAX}]",
+        description=(
+            f"Massa corporal em gramas "
+            f"[{BODY_MASS_MIN}, {BODY_MASS_MAX}]"
+        ),
         examples=[3750.0],
     )
     island: Island = Field(
@@ -81,10 +93,19 @@ class PredictionResponse(BaseModel):
     Retorna o resultado da classificação realizada pelo modelo.
     """
 
-    species: str = Field(..., description=f"Espécie predita. Uma de: {SPECIES}")
-    confidence: float = Field(..., description="Nível de confiança da predição (0.0 a 1.0)")
+    species: str = Field(
+        ...,
+        description=f"Espécie predita. Uma de: {SPECIES}"
+    )
+    confidence: float = Field(
+        ...,
+        description="Nível de confiança da predição (0.0 a 1.0)"
+    )
     probabilities: dict[str, float] = Field(
-        ..., description="Probabilidade detalhada para cada uma das espécies possíveis"
+        ...,
+        description=(
+            "Probabilidade detalhada para cada uma das espécies possíveis"
+        )
     )
 
 

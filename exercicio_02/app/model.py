@@ -11,27 +11,39 @@ from app.schemas import BuildingFeatures, HeatingLoadResponse
 
 logger = logging.getLogger(__name__)
 
+
 # Estado do módulo: Artefato do modelo
 _artifact: Optional[dict] = None
+
 
 def load_model():
     """Lê o arquivo .joblib do disco."""
     global _artifact
     if not MODEL_PATH.exists():
-        logger.error(f"Artefato não encontrado em {MODEL_PATH}. API falhará no startup.")
+        logger.error(
+            f"Artefato não encontrado em {MODEL_PATH}. "
+            "API falhará no startup."
+        )
         raise FileNotFoundError("Execute 'python train/train.py' primeiro.")
-    
+
     _artifact = joblib.load(MODEL_PATH)
-    logger.info(f"Modelo Energy Efficiency v{_artifact['version']} carregado com sucesso.")
+    logger.info(
+        f"Modelo Energy Efficiency v{_artifact['version']} "
+        "carregado com sucesso."
+    )
+
 
 def is_model_loaded() -> bool:
     return _artifact is not None
 
+
 def get_model_metrics() -> dict:
     return _artifact["metrics"] if _artifact else {}
 
+
 def get_model_features() -> list[str]:
     return _artifact["features"] if _artifact else []
+
 
 def predict(features: BuildingFeatures) -> HeatingLoadResponse:
     """Executa a predição usando o pipeline carregado."""
@@ -39,7 +51,7 @@ def predict(features: BuildingFeatures) -> HeatingLoadResponse:
         raise RuntimeError("Modelo não carregado na memória.")
 
     pipeline = _artifact["pipeline"]
-    
+
     # Transforma o schema Pydantic em array numpy (ordem das colunas do UCI)
     # X1, X2, X3, X4, X5, X6, X7, X8
     X = np.array([[

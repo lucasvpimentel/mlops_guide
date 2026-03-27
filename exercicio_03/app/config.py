@@ -1,8 +1,9 @@
 """
 Configuração centralizada do projeto Diamond Price Predictor.
 
-Todas as constantes do projeto são definidas aqui e importadas nos outros módulos.
-Isso evita "números mágicos" espalhados pelo código e facilita manutenção.
+Todas as constantes do projeto são definidas aqui e importadas nos outros
+módulos. Isso evita "números mágicos" espalhados pelo código e facilita
+manutenção.
 """
 
 from pathlib import Path
@@ -21,10 +22,12 @@ APP_TITLE = "Diamond Price Predictor API"
 APP_DESCRIPTION = """
 ## 💎 Diamond Price Predictor
 
-API de estimativa de preço de diamantes baseada no dataset clássico `diamonds` (ggplot2).
+API de estimativa de preço de diamantes baseada no dataset clássico `diamonds`
+(ggplot2).
 
 ### Funcionalidades
-- **Predição de preço**: Envie as características do diamante e receba a estimativa em USD
+- **Predição de preço**: Envie as características do diamante e receba a
+  estimativa em USD
 - **Conteinerização total**: Rode via Docker sem instalar Python localmente
 
 ### Features utilizadas

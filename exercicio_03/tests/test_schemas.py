@@ -49,7 +49,9 @@ class TestDiamondFeatures:
 
     def test_extra_field_rejected(self):
         with pytest.raises(ValidationError):
-            DiamondFeatures(**{**VALID_DIAMOND, "campo_extra": "não permitido"})
+            DiamondFeatures(
+                **{**VALID_DIAMOND, "campo_extra": "não permitido"}
+            )
 
     def test_missing_field_rejected(self):
         """Todos os campos são obrigatórios."""

@@ -16,5 +16,5 @@ CHOL_MIN, CHOL_MAX = 126, 564
 THALACH_MIN, THALACH_MAX = 71, 202
 
 # Enums/Categorias
-VALID_SEX = [0, 1] # 0=Female, 1=Male
-VALID_CP = [0, 1, 2, 3] # Typical, Atypical, Non-anginal, Asymptomatic
+VALID_SEX = [0, 1]  # 0=Female, 1=Male
+VALID_CP = [0, 1, 2, 3]  # Typical, Atypical, Non-anginal, Asymptomatic

@@ -19,13 +19,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODEL_PATH = BASE_DIR / "model" / "car_model.joblib"
 
+
 def train():
     print("Buscando dataset Car Evaluation da UCI (ID: 19)...")
     car_evaluation = fetch_ucirepo(id=19)
-    
+
     X = car_evaluation.data.features
     y = car_evaluation.data.targets
-    
+
     # Feature names exatas do UCI
     feature_names = ["buying", "maint", "doors", "persons", "lug_boot", "safety"]
     X.columns = feature_names
@@ -35,7 +36,7 @@ def train():
     )
 
     print(f"Treinando RandomForestClassifier (N={len(X_train)})...")
-    
+
     # Pipeline com OneHotEncoder para todas as features (todas são categóricas)
     pipeline = Pipeline([
         ('encoder', OneHotEncoder(handle_unknown='ignore', sparse_output=False)),
@@ -60,6 +61,7 @@ def train():
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(artifact, MODEL_PATH)
     print(f"Modelo serializado com sucesso em: {MODEL_PATH}")
+
 
 if __name__ == "__main__":
     train()
