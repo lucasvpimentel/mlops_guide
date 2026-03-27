@@ -47,7 +47,32 @@ Para projetos profissionais, costuma-se usar plataformas que gerenciam o modelo 
 
 ---
 
-## 4. Comparativo de Estratégias
+## 4. Tabela Comparativa de Serviços (Paralelos entre Clouds)
+
+Abaixo, os nomes comerciais dos serviços equivalentes em cada provedor para facilitar sua migração ou escolha:
+
+### 4.1 Infraestrutura e Containers
+
+| Categoria | Google Cloud (GCP) | Amazon Web Services (AWS) | Microsoft Azure |
+| :--- | :--- | :--- | :--- |
+| **Máquinas Virtuais (VMs)** | Compute Engine | EC2 | Azure Virtual Machines |
+| **Orquestração Kubernetes** | GKE (Google Kubernetes Engine) | EKS (Elastic Kubernetes Service) | AKS (Azure Kubernetes Service) |
+| **Serverless Containers** | **Cloud Run** (Recomendado) | AWS Fargate / App Runner | Azure Container Apps |
+| **Registro de Imagens** | Artifact Registry | ECR (Elastic Container Registry) | Azure Container Registry |
+
+### 4.2 Machine Learning Especializado (MLOps)
+
+| Categoria | Google Cloud (Vertex AI) | Amazon SageMaker | Azure Machine Learning |
+| :--- | :--- | :--- | :--- |
+| **Plataforma Unificada** | Vertex AI | SageMaker Studio | Azure ML Studio |
+| **Endpoints de Predição** | Vertex AI Prediction | SageMaker Real-time Inference | Azure ML Endpoints |
+| **Catálogo de Modelos** | Vertex Model Registry | SageMaker Model Registry | Azure ML Model Management |
+| **Treinamento Escalável** | Vertex AI Training | SageMaker Training Jobs | Azure ML Training |
+| **Feature Store** | Vertex AI Feature Store | SageMaker Feature Store | Azure ML Feature Store |
+
+---
+
+## 5. Resumo de Estratégias e Custos
 
 | Estratégia | Controle | Facilidade | Custo (Baixo Volume) | Recomendação |
 | :--- | :--- | :--- | :--- | :--- |
@@ -58,7 +83,7 @@ Para projetos profissionais, costuma-se usar plataformas que gerenciam o modelo 
 
 ---
 
-## 5. Próximos Passos (Integração Contínua)
+## 6. Próximos Passos (Integração Contínua)
 
 O fluxo ideal de MLOps que conecta seu código a essas nuvens é:
 1.  **Code:** Você commita no GitHub.
