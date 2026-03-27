@@ -482,6 +482,28 @@ exercicio_XX/
 
 ---
 
+## 📚 Referências Consolidadas
+
+### Datasets (Fontes Originais)
+*   **Ex 01 (Pinguins):** Horst, A.M., Hill, A.P., & Gorman, K.B. (2020). *palmerpenguins: Palmer Archipelago (Antarctica) penguin data*. [R package version 0.1.0](https://allisonhorst.github.io/palmerpenguins/).
+*   **Ex 02 (Energia):** Tsanas, A., & Xifara, A. (2012). *Accurate quantitative estimation of the energy performance of residential buildings using multi-output regression*. Energy and Buildings. [UCI Repository](https://archive.ics.uci.edu/dataset/242/energy+efficiency).
+*   **Ex 03 (Diamantes):** Wickham, H. (2016). *ggplot2: Elegant Graphics for Data Analysis*. Springer-Verlag New York. [Diamonds documentation](https://ggplot2.tidyverse.org/reference/diamonds.html).
+*   **Ex 04 (Coração):** Detrano, R. et al. (1989). *International application of a new probability algorithm for the diagnosis of coronary artery disease*. American Journal of Cardiology. [UCI Repository](https://archive.ics.uci.edu/dataset/45/heart+disease).
+*   **Ex 05 (Carros):** Bohanec, M., & Rajkovic, V. (1990). *Expert system for decision making*. Sistemica. [UCI Repository](https://archive.ics.uci.edu/dataset/19/car+evaluation).
+*   **Ex 06 (Moda):** Xiao, H., Rasul, K., & Vollgraf, R. (2017). *Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms*. [arXiv:1708.07747](https://arxiv.org/abs/1708.07747).
+*   **Ex 07 (Spam):** Almeida, T.A., Hidalgo, J.M.G., & Yamakami, A. (2011). *Contributions to the Study of SMS Spam Filtering: New Collection and Results*. ACM Symposium on Document Engineering (DocEng'11). [UCI Repository](https://archive.ics.uci.edu/dataset/228/sms+spam+collection).
+
+### Tecnologias e Frameworks
+*   **FastAPI:** [fastapi.tiangolo.com](https://fastapi.tiangolo.com/) - Framework web de alta performance.
+*   **Scikit-Learn:** [scikit-learn.org](https://scikit-learn.org/) - Machine Learning em Python.
+*   **Pydantic:** [pydantic.dev](https://pydantic.dev/) - Validação de dados via Python type hints.
+*   **Docker:** [docker.com](https://www.docker.com/) - Plataforma de containerização.
+*   **Pytest:** [pytest.org](https://pytest.org/) - Framework de testes automatizados.
+*   **Flake8:** [flake8.pycqa.org](https://flake8.pycqa.org/) - Ferramenta de linting e estilo (PEP 8).
+*   **MLOps Theory:** Treveil, M. et al. (2021). *Introducing MLOps*. O'Reilly Media.
+
+---
+
 <div align="center">
 
 **Para teoria aprofundada com exemplos de IA Generativa:** [`mlops.md`](mlops.md)
