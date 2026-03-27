@@ -15,11 +15,16 @@ Para detalhes teóricos, consulte o [Guia de Teoria Aplicada](TEORIA.md) e para 
 - **API:** FastAPI.
 - **QA:** Flake8 + GitHub Actions.
 
----
+## 🚀 Como Rodar
 
-## 🎯 Conceito MLOps: Linting
+### 💻 Localmente
+1. Instale as dependências: `pip install -r requirements.txt`
+2. Treine o modelo: `python src/train.py`
+3. Inicie a API: `uvicorn app.main:app --reload`
 
-O **Linting** é o processo de analisar o código em busca de erros de estilo e bugs em potencial. Em MLOps, ele garante que:
-- O código de pré-processamento seja legível.
-- Não existam variáveis "mortas" ou imports inúteis que poluem o ambiente de produção.
-- O padrão de escrita (PEP 8) seja uniforme entre todos os desenvolvedores.
+### 🐳 Com Docker
+1. Treine o modelo localmente: `python src/train.py`
+2. Construa a imagem: `docker build -t car-api .`
+3. Rode o container: `docker run -p 8000:8000 car-api`
+
+Acesse a documentação em `http://localhost:8000/docs`.

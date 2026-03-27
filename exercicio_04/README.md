@@ -10,10 +10,16 @@ Diferente dos exercícios anteriores que focaram em serialização e docker, aqu
 - **Consistência de API:** Testes de integração garantem que os endpoints `/health`, `/info` e `/predict` funcionam conforme o contrato.
 - **Automação:** Uso do `pytest` para validação rápida de regressões.
 
-## 🛠️ Tecnologias
-- **FastAPI**
-- **Pydantic** (Validação Biológica)
-- **Pytest** (Suíte de Testes)
-- **Scikit-Learn** (RandomForestClassifier)
+## 🚀 Como Rodar
 
-Leia o arquivo [TEORIA.md](TEORIA.md) para entender como testes automatizados evitam o "Garbage In, Garbage Out" em produção.
+### 💻 Localmente
+1. Instale as dependências: `pip install -r requirements.txt`
+2. Treine o modelo: `python train/train.py`
+3. Inicie a API: `uvicorn app.main:app --reload`
+
+### 🐳 Com Docker
+1. Treine o modelo localmente: `python train/train.py`
+2. Construa a imagem: `docker build -t heart-api .`
+3. Rode o container: `docker run -p 8000:8000 heart-api`
+
+Acesse a documentação em `http://localhost:8000/docs`.

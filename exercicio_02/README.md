@@ -39,4 +39,16 @@ exercicio_02/
 
 ## 📖 Como começar?
 
-Para entender a teoria por trás deste exercício, leia o arquivo [TEORIA.md](TEORIA.md). Para rodar o projeto localmente ou via Docker, siga as [INSTRUCOES.md](INSTRUCOES.md).
+Para entender a teoria por trás deste exercício, leia o arquivo [TEORIA.md](TEORIA.md).
+
+### 💻 Localmente
+1. Instale as dependências: `pip install -r requirements.txt`
+2. Treine o modelo: `python train/train.py`
+3. Inicie a API: `uvicorn app.main:app --reload`
+
+### 🐳 Com Docker
+1. Treine o modelo localmente: `python train/train.py`
+2. Construa a imagem: `docker build -t energy-api .`
+3. Rode o container: `docker run -p 8000:8000 energy-api`
+
+Acesse a documentação em `http://localhost:8000/docs`.
