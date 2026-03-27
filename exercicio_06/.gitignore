@@ -1,0 +1,33 @@
+# Artefatos de modelo (gerados pelo treino, não versionados)
+model/*.joblib
+model/*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Ambiente virtual
+venv/
+.venv/
+env/
+
+# Dados baixados pelo keras
+~/.keras/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Testes
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db

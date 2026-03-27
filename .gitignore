@@ -1,0 +1,38 @@
+# Artefatos de modelo (gerados pelo treino, não versionados)
+**/model/*.joblib
+**/model/*.pkl
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Dados baixados (Keras, HuggingFace, etc.)
+~/.keras/
+~/.cache/
+
+# Testes
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Variáveis de ambiente
+.env
+.env.local

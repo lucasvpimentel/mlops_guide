@@ -1,0 +1,99 @@
+# ---------------------------------------------------------------------------
+# Pipeline CI/CD — Spam Detection API
+#
+# Gatilho: qualquer push ou pull request para a branch 'main'
+#
+# Jobs:
+#   1. test         → instala deps, treina modelo, roda pytest (sempre)
+#   2. build-push   → builda imagem Docker e envia ao Docker Hub
+#                     (apenas em push direto para main, após test passar)
+# ---------------------------------------------------------------------------
+
+name: CI/CD - Spam Detection
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # JOB 1: Qualidade — Treinar + Testar
+  # Motivo: separar treino de teste permite identificar onde o pipeline quebrou
+  # ---------------------------------------------------------------------------
+  test:
+    name: Train & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixar o código do repositório
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Configurar Python (mesma versão do Dockerfile)
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"           # cacheia o pip entre runs para builds mais rápidos
+
+      # 3. Instalar dependências
+      - name: Install dependencies
+        run: pip install --only-binary :all: -r requirements.txt
+
+      # 4. Treinar o modelo — gera model.joblib necessário para os testes de integração
+      - name: Train model
+        run: python -m src.train
+
+      # 5. Rodar todos os testes
+      # Se qualquer teste falhar, o job para aqui e o job de build NÃO é executado
+      - name: Run tests
+        run: pytest tests/ -v
+
+      # 6. Preservar o model.joblib entre jobs (artifact)
+      # Motivo: o job de build roda em um runner diferente — sem isso, perderia o arquivo
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-joblib
+          path: model.joblib
+
+  # ---------------------------------------------------------------------------
+  # JOB 2: Empacotamento — Build + Push da imagem Docker
+  # Executado SOMENTE em push para main (não em pull requests) e APÓS test passar
+  # ---------------------------------------------------------------------------
+  build-and-push:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: test                          # depende do job 'test' ter passado
+    if: github.event_name == 'push'      # não executa em pull_request
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Baixar o model.joblib gerado no job anterior
+      - name: Download model artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: model-joblib
+
+      # Autenticar no Docker Hub usando secrets do repositório GitHub
+      # Configure em: Settings → Secrets → DOCKERHUB_USERNAME e DOCKERHUB_TOKEN
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Buildar e enviar a imagem, tagueada com o SHA do commit para rastreabilidade
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/spam-detection-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/spam-detection-api:${{ github.sha }}

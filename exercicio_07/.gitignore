@@ -1,0 +1,23 @@
+# Ambiente virtual — nunca versionar, cada dev recria com pip install
+.venv/
+
+# Artefato treinado — gerado pelo src/train.py
+# Versionar em projetos reais requer Git LFS ou um model registry
+model.joblib
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
