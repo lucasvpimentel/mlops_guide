@@ -21,14 +21,21 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest
+          pip install flake8 pytest pandas scikit-learn seaborn joblib fastapi uvicorn
           if [ -f exercicio_03/requirements.txt ]; then pip install -r exercicio_03/requirements.txt; fi
 
       - name: Lint with flake8
         run: flake8 exercicio_03/
 
+      - name: Train model
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/exercicio_03
+          python exercicio_03/train/train.py
+
       - name: Test with pytest
-        run: pytest exercicio_03/
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/exercicio_03
+          pytest exercicio_03/
 
       - name: Build Docker image
         run: docker build -t ex_03 ./exercicio_03

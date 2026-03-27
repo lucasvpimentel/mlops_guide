@@ -21,14 +21,21 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest
+          pip install flake8 pytest pandas scikit-learn joblib fastapi uvicorn tensorflow-cpu pillow python-multipart
           if [ -f exercicio_06/requirements.txt ]; then pip install -r exercicio_06/requirements.txt; fi
 
       - name: Lint with flake8
         run: flake8 exercicio_06/
 
+      - name: Train model
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/exercicio_06
+          if [ -f exercicio_06/train/train.py ]; then python exercicio_06/train/train.py; fi
+
       - name: Test with pytest
-        run: pytest exercicio_06/
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/exercicio_06
+          pytest exercicio_06/
 
       - name: Build Docker image
         run: docker build -t ex_06 ./exercicio_06
