@@ -5,7 +5,6 @@ Baixa o dataset UCI Heart Disease (ID: 45) e gera um artefato .joblib.
 import sys
 from pathlib import Path
 import joblib
-import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline

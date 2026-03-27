@@ -19,7 +19,7 @@ def load_model():
     global _artifact
     if not MODEL_PATH.exists():
         logger.error(f"Artefato não encontrado em {MODEL_PATH}. API falhará no startup.")
-        raise FileNotFoundError(f"Execute 'python train/train.py' primeiro.")
+        raise FileNotFoundError("Execute 'python train/train.py' primeiro.")
     
     _artifact = joblib.load(MODEL_PATH)
     logger.info(f"Modelo Energy Efficiency v{_artifact['version']} carregado com sucesso.")

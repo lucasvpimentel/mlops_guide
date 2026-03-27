@@ -8,7 +8,6 @@ Execute 'python train/train.py' antes de rodar estes testes.
 import io
 
 import numpy as np
-import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 

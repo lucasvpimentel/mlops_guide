@@ -1,4 +1,3 @@
-import pytest
 from src.preprocessing import clean_text
 
 

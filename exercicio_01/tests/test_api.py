@@ -5,7 +5,6 @@ Requerem o modelo treinado em model/penguin_classifier.joblib.
 Execute 'python train/train_model.py' antes de rodar estes testes.
 """
 
-import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app

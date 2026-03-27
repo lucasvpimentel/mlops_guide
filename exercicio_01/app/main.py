@@ -2,7 +2,6 @@ import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
 
 from app import model as model_module
 from app.config import APP_DESCRIPTION, APP_TITLE, APP_VERSION
@@ -58,7 +57,7 @@ def health_check():
 def model_info():
     """
     Retorna informações detalhadas e metadados sobre o modelo.
-    Inclui as features de entrada esperadas, as classes de espécies possíveis e valores válidos para campos categóricos.
+    Inclui features de entrada, classes de espécies e valores válidos para campos categóricos.
     """
     return ModelInfoResponse(
         version=APP_VERSION,
@@ -73,9 +72,9 @@ def model_info():
 def predict(features: PenguinFeatures):
     """
     Endpoint principal para predição.
-    Classifica a espécie de um pinguim com base nas suas características físicas (comprimento do bico, massa corporal, etc.).
+    Classifica a espécie de um pinguim com base nas características físicas.
 
-    Retorna a espécie predita, o nível de confiança e a probabilidade para cada uma das classes possíveis.
+    Retorna a espécie predita, confiança e probabilidade por classe.
     """
     try:
         # Chama a lógica de predição encapsulada no módulo do modelo

@@ -2,8 +2,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, ConfigDict
 from app.config import (
     RC_MIN, RC_MAX, SA_MIN, SA_MAX, WA_MIN, WA_MAX,
-    RA_MIN, RA_MAX, OH_MIN, OH_MAX, VALID_ORIENTATIONS,
-    GA_MIN, GA_MAX, VALID_GLAZING_DIST, APP_VERSION
+    RA_MIN, RA_MAX, OH_MIN, OH_MAX, GA_MIN, GA_MAX, APP_VERSION
 )
 
 class BuildingFeatures(BaseModel):

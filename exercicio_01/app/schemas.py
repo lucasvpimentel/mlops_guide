@@ -11,6 +11,7 @@ from app.config import (
 # Enumerações (Enums) para garantir que apenas valores válidos sejam aceitos
 # e para facilitar a integração com a documentação automática.
 
+
 class Island(str, Enum):
     """Opções válidas para as ilhas do arquipélago Palmer."""
     torgersen = "Torgersen"

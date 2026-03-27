@@ -2,8 +2,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, ConfigDict
 from app.config import (
     AGE_MIN, AGE_MAX, TRESTBPS_MIN, TRESTBPS_MAX,
-    CHOL_MIN, CHOL_MAX, THALACH_MIN, THALACH_MAX,
-    VALID_SEX, VALID_CP
+    CHOL_MIN, CHOL_MAX, THALACH_MIN, THALACH_MAX
 )
 
 class HeartPatientFeatures(BaseModel):

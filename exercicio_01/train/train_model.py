@@ -14,20 +14,19 @@ Saída:
 import sys
 from pathlib import Path
 
-import joblib
-import numpy as np
-import pandas as pd
-import seaborn as sns
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, accuracy_score
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-
-# Garante que o módulo app seja encontrado ao rodar da raiz do projeto, permitindo imports de app.config
+# Garante que o módulo app seja encontrado ao rodar da raiz do projeto
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from app.config import MODEL_PATH, SPECIES
+import joblib  # noqa: E402
+import pandas as pd  # noqa: E402
+import seaborn as sns  # noqa: E402
+from sklearn.ensemble import RandomForestClassifier  # noqa: E402
+from sklearn.metrics import classification_report, accuracy_score  # noqa: E402
+from sklearn.model_selection import train_test_split  # noqa: E402
+from sklearn.pipeline import Pipeline  # noqa: E402
+from sklearn.preprocessing import LabelEncoder, StandardScaler  # noqa: E402
+
+from app.config import MODEL_PATH, SPECIES  # noqa: E402
 
 # Definição das colunas usadas para entrada (features) e do alvo da predição (target)
 FEATURE_COLUMNS = [
@@ -73,7 +72,7 @@ def train(X_train: pd.DataFrame, y_train: pd.Series) -> Pipeline:
     print("Treinando RandomForestClassifier...")
     # Usamos um Pipeline para encapsular o escalonamento e o modelo em um único objeto
     pipeline = Pipeline([
-        ("scaler", StandardScaler()), # Normaliza os dados (média 0 e variância 1)
+        ("scaler", StandardScaler()),  # Normaliza os dados (média 0 e variância 1)
         ("clf", RandomForestClassifier(
             n_estimators=100,           # Quantidade de árvores na floresta
             random_state=RANDOM_STATE,  # Fixa a aleatoriedade
@@ -86,7 +85,7 @@ def train(X_train: pd.DataFrame, y_train: pd.Series) -> Pipeline:
 
 def evaluate(pipeline: Pipeline, X_test: pd.DataFrame, y_test: pd.Series) -> None:
     """
-    Avalia a performance do modelo no conjunto de dados de teste (não vistos durante o treino).
+    Avalia a performance do modelo no conjunto de dados de teste.
     """
     y_pred = pipeline.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
@@ -98,12 +97,12 @@ def evaluate(pipeline: Pipeline, X_test: pd.DataFrame, y_test: pd.Series) -> Non
 
 def save_model(pipeline: Pipeline) -> None:
     """
-    Salva o pipeline de inferência e os metadados necessários em um arquivo .joblib.
+    Salva o pipeline e os metadados necessários em um arquivo .joblib.
     """
     # Cria o diretório de destino caso ele não exista
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    # Salva o pipeline junto com metadados úteis para garantir que a API use as features corretas
+    # Salva o pipeline junto com metadados para que a API use as features corretas
     artifact = {
         "pipeline": pipeline,
         "feature_names": FEATURE_COLUMNS,
@@ -120,7 +119,7 @@ def main() -> None:
     X, y = load_and_prepare_data()
 
     # Divide os dados entre Treino (80%) e Teste (20%)
-    # Stratify garante que a proporção de cada espécie seja mantida em ambos os conjuntos
+    # Stratify mantém a proporção de cada espécie em treino e teste
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=RANDOM_STATE, stratify=y
     )

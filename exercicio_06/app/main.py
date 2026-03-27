@@ -12,7 +12,6 @@ import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
-from fastapi.responses import JSONResponse
 
 from app import model as model_module
 from app.config import ALLOWED_CONTENT_TYPES, APP_DESCRIPTION, APP_TITLE, APP_VERSION

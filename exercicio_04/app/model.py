@@ -5,7 +5,6 @@ import logging
 from typing import Optional
 import joblib
 import pandas as pd
-import numpy as np
 from app.config import MODEL_PATH
 from app.schemas import HeartPatientFeatures, HeartRiskResponse
 

@@ -32,9 +32,6 @@ from sklearn.preprocessing import OrdinalEncoder
 from app.config import (
     APP_VERSION,
     MODEL_PATH,
-    VALID_CLARITIES,
-    VALID_COLORS,
-    VALID_CUTS,
 )
 
 # Colunas do dataset

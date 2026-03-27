@@ -7,7 +7,6 @@ Execute 'python train/train.py' antes de rodar estes testes.
 import pytest
 from fastapi.testclient import TestClient
 
-import pytest
 
 from app.main import app
 

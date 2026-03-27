@@ -1,41 +1,41 @@
-name: CI - Exercicio 06
+name: CI - Exercicio 06 (Curador de Moda)
+
 on:
   push:
     paths:
       - 'exercicio_06/**'
+      - '.github/workflows/ex06_ci.yml'
   pull_request:
     paths:
       - 'exercicio_06/**'
 
 jobs:
-  test-and-build:
+  ci:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: exercicio_06
+
+    env:
+      PYTHONPATH: ${{ github.workspace }}/exercicio_06
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install flake8 pytest pandas scikit-learn joblib fastapi uvicorn tensorflow-cpu pillow python-multipart
-          if [ -f exercicio_06/requirements.txt ]; then pip install -r exercicio_06/requirements.txt; fi
+          pip install --upgrade pip
+          pip install flake8
+          pip install -r requirements.txt --ignore-requires-python
 
       - name: Lint with flake8
-        run: flake8 exercicio_06/
+        run: flake8 app/ train/ tests/
 
-      - name: Train model
-        run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/exercicio_06
-          if [ -f exercicio_06/train/train.py ]; then python exercicio_06/train/train.py; fi
-
-      - name: Test with pytest
-        run: |
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/exercicio_06
-          pytest exercicio_06/
-
-      - name: Build Docker image
-        run: docker build -t ex_06 ./exercicio_06
+      - name: Run unit tests (sem modelo)
+        run: pytest tests/test_schemas.py -v

@@ -114,7 +114,7 @@ def main() -> None:
 
     X_train, y_train, X_test, y_test = load_fashion_mnist()
 
-    print(f"\nTreinando MLPClassifier (hidden_layers=[256, 128], max_iter=30)...")
+    print("\nTreinando MLPClassifier (hidden_layers=[256, 128], max_iter=30)...")
     pipeline = build_pipeline()
     pipeline.fit(X_train, y_train)
 
