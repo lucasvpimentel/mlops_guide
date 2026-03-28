@@ -21,9 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import joblib  # noqa: E402
-import numpy as np  # noqa: E402
 from sklearn.datasets import fetch_openml  # noqa: E402
-from sklearn.model_selection import train_test_split  # noqa: E402
 from sklearn.metrics import accuracy_score, classification_report  # noqa: E402
 from sklearn.neural_network import MLPClassifier  # noqa: E402
 from sklearn.pipeline import Pipeline  # noqa: E402
@@ -34,7 +32,7 @@ from app.config import APP_VERSION, CLASSES, MODEL_PATH  # noqa: E402
 def load_fashion_mnist() -> tuple:
     """
     Baixa o Fashion MNIST via sklearn.datasets.fetch_openml.
-    
+
     O dataset é baixado uma vez e fica em cache local.
     Retorna (X_train, y_train), (X_test, y_test) normalizados.
     """
