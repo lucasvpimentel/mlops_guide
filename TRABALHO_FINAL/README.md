@@ -190,7 +190,7 @@ docker run -p 8000:8000 bank-marketing-api
 1. **Destinatario:** lucasvpimentel@gmail.com
 2. **Assunto:** `[Seu Nome Completo] - mlops`
 3. **Conteudo:** Link do repositorio GitHub com a solucao completa.
-4. **Data Limite:** **04 de abril de 2026**.
+4. **Data Limite:** **11 de abril de 2026**.
 
 ---
 
